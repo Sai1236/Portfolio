@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jaswanth Amity | Data Analyst Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-dark: #07111f;
+      --bg-mid: #0f1b2d;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-soft: #cbd5e1;
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --accent-3: #14b8a6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 25%),
+        radial-gradient(circle at top right, rgba(129, 140, 248, 0.16), transparent 20%),
+        linear-gradient(135deg, var(--bg-dark), var(--bg-mid) 55%, #08131f);
+      color: white;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.18) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 30%, rgba(20, 184, 166, 0.16) 0 2px, transparent 3px),
+        radial-gradient(circle at 50% 70%, rgba(129, 140, 248, 0.14) 0 2px, transparent 3px);
+      background-size: 48px 48px, 48px 48px, 240px 240px, 280px 280px, 320px 320px;
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .analytics-lines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .analytics-lines span {
+      position: absolute;
+      display: block;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.65), transparent);
+      animation: dataFlow 7s linear infinite;
+      opacity: 0.35;
+    }
+
+    .analytics-lines span:nth-child(1) { left: 10%; height: 220px; top: -20%; animation-delay: 0s; }
+    .analytics-lines span:nth-child(2) { left: 28%; height: 320px; top: -30%; animation-delay: 1.2s; }
+    .analytics-lines span:nth-child(3) { left: 46%; height: 280px; top: -25%; animation-delay: 2.8s; }
+    .analytics-lines span:nth-child(4) { left: 65%; height: 360px; top: -35%; animation-delay: 0.8s; }
+    .analytics-lines span:nth-child(5) { left: 84%; height: 240px; top: -15%; animation-delay: 3.2s; }
+
+    @keyframes dataFlow {
+      0% { transform: translateY(-10%); opacity: 0; }
+      15% { opacity: 0.4; }
+      100% { transform: translateY(130vh); opacity: 0; }
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 17, 31, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #dbeafe;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.18));
+      border-color: rgba(56, 189, 248, 0.38);
+      color: white;
+    }
+
+    .page {
+      display: none;
+      min-height: calc(100vh - 81px);
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+
+    .page.active {
+      display: block;
+      animation: pageFade 0.45s ease;
+    }
+
+    @keyframes pageFade {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      padding-top: 24px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: #dbeafe;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+    }
+
+    h1 {
+      margin: 20px 0 0;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.02;
+    }
+
+    h2 {
+      margin: 12px 0 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+    }
+
+    .lead {
+      margin-top: 22px;
+      color: var(--text-soft);
+      font-size: 1.08rem;
+      line-height: 1.9;
+      max-width: 760px;
+    }
+
+    .info-chips,
+    .button-row,
+    .tag-wrap,
+    .project-actions,
+    .stats-grid,
+    .card-grid,
+    .contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .info-chip,
+    .tag,
+    .stat-card,
+    .card,
+    .contact-card,
+    .profile-panel {
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(2, 6, 23, 0.22);
+    }
+
+    .info-chip {
+      padding: 12px 16px;
+      border-radius: 999px;
+      color: #dbeafe;
+      font-size: 0.95rem;
+    }
+
+    .button-row {
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 16px 32px rgba(56, 189, 248, 0.22);
+    }
+
+    .btn-secondary {
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-photo-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .profile-panel {
+      width: 100%;
+      max-width: 400px;
+      padding: 18px;
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(129, 140, 248, 0.14), rgba(20, 184, 166, 0.12));
+      z-index: 0;
+    }
+
+    .profile-panel img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--text-soft);
+      font-size: 1.02rem;
+      line-height: 1.8;
+      max-width: 760px;
+      margin-top: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .stat-card {
+      border-radius: 24px;
+      padding: 22px;
+    }
+
+    .stat-label {
+      color: #bfdbfe;
+      font-size: 0.95rem;
+    }
+
+    .stat-value {
+      margin-top: 10px;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .card {
+      border-radius: 28px;
+      padding: 28px;
+      transition: transform 0.28s ease, border-color 0.28s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.32);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    .muted {
+      margin-top: 8px;
+      color: #93c5fd;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+    }
+
+    .card p,
+    .card li,
+    .contact-card p {
+      color: var(--text-soft);
+      line-height: 1.85;
+    }
+
+    .tag-wrap {
+      margin-top: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: #e0f2fe;
+      font-size: 0.9rem;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+    }
+
+    ul.clean {
+      margin: 16px 0 0;
+      padding-left: 18px;
+    }
+
+    ul.clean li {
+      margin-bottom: 10px;
+    }
+
+    .project-actions,
+    .contact-grid {
+      margin-top: 18px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .contact-card {
+      border-radius: 24px;
+      padding: 22px;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .contact-card strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+    }
+
+    .page-intro {
+      max-width: 820px;
+    }
+
+    .back-home {
+      display: inline-flex;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .grid-2,
+      .card-grid,
+      .contact-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="analytics-lines" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="shell">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="#home" class="brand">Jaswanth Amity</a>
+        <div class="nav-links">
+          <a href="#home" data-page-link>Home</a>
+          <a href="#about" data-page-link>About</a>
+          <a href="#skills" data-page-link>Skills</a>
+          <a href="#experience" data-page-link>Experience</a>
+          <a href="#projects" data-page-link>Projects</a>
+          <a href="#contact" data-page-link>Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section id="home" class="page active">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Data Analyst · BI Analyst</span>
+            <h1>Turning enterprise data into business decisions.</h1>
+            <p class="lead">
+              I’m Jaswanth Amity, a data analyst specializing in healthcare and financial analytics. I build dashboards, reporting systems, ETL workflows, and data solutions using SQL, Python, Power BI, Tableau, Snowflake, and modern analytics platforms.
+            </p>
+
+            <div class="info-chips" style="margin-top: 24px;">
+              <span class="info-chip">📍 Denton, TX</span>
+              <span class="info-chip">📞 +1 (940) 297-7906</span>
+              <span class="info-chip">✉ saijaswanth.amity@gmail.com</span>
+            </div>
+
+            <div class="button-row">
+              <a href="#projects" class="btn btn-primary" data-page-link>View Projects</a>
+              <a href="#contact" class="btn btn-secondary" data-page-link>Contact Me</a>
+              <a href="https://github.com/Sai1236" target="_blank" rel="noreferrer" class="btn btn-secondary">GitHub</a>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-label">Experience</div>
+                <div class="stat-value">3.5+ Years</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Healthcare Records</div>
+                <div class="stat-value">50M+</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Stakeholders</div>
+                <div class="stat-value">100+</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Core Stack</div>
+                <div class="stat-value">SQL · Python · R</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-photo-wrap">
+            <div class="profile-panel">
+              <img src="images/Profile.jpg" alt="Jaswanth Amity profile photo" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="page">
+        <div class="page-intro">
+          <div class="section-title">About</div>
+          <h2>Analytics background with business impact</h2>
+          <p class="section-sub">
+            I have 3.5+ years of experience working across healthcare and financial analytics, helping organizations turn large-scale, complex data into clear reporting and better decisions. My work focuses on dashboard development, ETL pipelines, data validation, KPI reporting, and business analysis that improves visibility, reduces manual effort, and supports faster action.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>What I do</h3>
+            <ul class="clean">
+              <li>Build executive and operational dashboards for decision-making</li>
+              <li>Design data workflows using SQL, Python, and cloud platforms</li>
+              <li>Improve data quality and reporting accuracy through validation frameworks</li>
+              <li>Translate business requirements into usable analytics solutions</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Quick Highlights</h3>
+            <ul class="clean">
+              <li>3.5+ years in analytics and BI</li>
+              <li>50M+ healthcare records processed</li>
+              <li>100+ stakeholders supported through reporting</li>
+              <li>Experience across healthcare and financial domains</li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="#home" class="btn btn-secondary back-home" data-page-link>Back to Home</a>
+      </section>
+
+      <section id="skills" class="page">
+        <div class="page-intro">
+          <div class="section-title">Skills</div>
+          <h2>Core tools and analytical strengths</h2>
+          <p class="section-sub">
+            My technical stack combines data querying, BI development, cloud-based data platforms, and business reporting. I use these tools to create reliable datasets, automate reporting, and generate insights that are easy for stakeholders to act on.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>Languages</h3>
+            <div class="tag-wrap">
+              <span class="tag">SQL</span>
+              <span class="tag">Python</span>
+              <span class="tag">R</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>BI & Analytics</h3>
+            <div class="tag-wrap">
+              <span class="tag">Power BI</span>
+              <span class="tag">Tableau</span>
+              <span class="tag">Excel</span>
+              <span class="tag">QlikView</span>
+              <span class="tag">A/B Testing</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Data Platforms</h3>
+            <div class="tag-wrap">
+              <span class="tag">Snowflake</span>
+			   <span class="tag">SQL Server (SSMS)</span>
+              <span class="tag">Databricks</span>
+              <span class="tag">Azure Data Factory</span>
+              <span class="tag">Azure Synapse</span>
+              <span class="tag">BigQuery</span>
+            </div>
+          </div>
+
+		  <div class="card">
+             <h3>AI/ML</h3>
+            <div class="tag-wrap">
+              <span class="tag">RAG Architecture</span>
+              <span class="tag">Vector Embeddings</span>
+              <span class="tag">Semantic Search</span>
+              <span class="tag">LLM Integration</span>
+              <span class="tag">Logistic Regression</span>
+			  <span class="tag">Random Forest</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Domain & Reporting Strengths</h3>
+            <div class="tag-wrap">
+              <span class="tag">Healthcare Analytics</span>
+              <span class="tag">Financial Analytics</span>
+              <span class="tag">ETL/ELT</span>
+              <span class="tag">KPI Dashboards</span>
+              <span class="tag">Data Validation</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="#home" class="btn btn-secondary back-home" data-page-link>Back to Home</a>
+      </section>
+
+      <section id="experience" class="page">
+        <div class="page-intro">
+          <div class="section-title">Experience</div>
+          <h2>Professional experience</h2>
+          <p class="section-sub">
+            My experience combines business reporting, cloud data platforms, ETL workflows, and executive-facing dashboards across university, healthcare, and enterprise environments.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>Data Analyst — University of North Texas</h3>
+            <div class="muted">Aug 2024 – Dec 2025 · Financial Analytics</div>
+            <ul class="clean">
+              <li>Built dashboards for 100+ university stakeholders to track revenue, margins, and cost trends.</li>
+              <li>Improved query performance by 35% and reduced recurring reporting effort by 40%.</li>
+              <li>Created budgeting, forecasting, variance analysis, and data validation workflows using SQL and Python.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Junior Data Analyst — HCLTech</h3>
+            <div class="muted">Jan 2022 – Mar 2024 · Healthcare Analytics</div>
+            <ul class="clean">
+              <li>Processed and standardized 50M+ healthcare records using SQL and Python.</li>
+              <li>Built ETL/ELT pipelines using Snowflake and Azure to reduce manual preparation effort by 30%.</li>
+              <li>Developed Power BI dashboards and predictive analytics workflows for revenue cycle and operational reporting.</li>
+            </ul>
+          </div>
+        </div>
+
+        <a href="#home" class="btn btn-secondary back-home" data-page-link>Back to Home</a>
+      </section>
+
+      <section id="projects" class="page">
+        <div class="page-intro">
+          <div class="section-title">Projects</div>
+          <h2>Featured project work</h2>
+          <p class="section-sub">
+            These projects highlight SQL analytics, dashboarding, data cleaning, Python-based EDA, and AI-driven document retrieval. Each project links to your GitHub repository for direct review.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>AI Document Retrieval System</h3>
+            <div class="muted">RAG · LLM · Python · Semantic Search</div>
+            <p>Built a semantic document retrieval system using vector embeddings and large language models to improve context-aware search and response generation.</p>
+            <div class="project-actions">
+              <a href="https://github.com/Sai1236/AI-DRIVEN-SCIENTIFIC-DOCUMENT-EXTRACTION-AND-SCORING-SYSTEM" target="_blank" rel="noreferrer" class="btn btn-primary">View GitHub</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>COVID Data Dashboard</h3>
+            <div class="muted">SQL · Tableau · Excel</div>
+            <p>Analyzed 100K+ records to uncover infection, death, and vaccination trends and designed an interactive dashboard for global-level insights.</p>
+            <div class="project-actions">
+              <a href="https://github.com/Sai1236/Project_3_Covid_Dashboard" target="_blank" rel="noreferrer" class="btn btn-primary">View GitHub</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Housing Data Pipeline</h3>
+            <div class="muted">SQL Server · Data Cleaning</div>
+            <p>Cleaned and standardized 56K+ housing records, removed duplicates, and delivered an analytics-ready dataset that improved downstream reliability.</p>
+            <div class="project-actions">
+              <a href="https://github.com/Sai1236/Project_2_Data-Cleaning" target="_blank" rel="noreferrer" class="btn btn-primary">View GitHub</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Movie Revenue Analysis</h3>
+            <div class="muted">Python · Pandas · EDA</div>
+            <p>Performed exploratory data analysis to identify the strongest predictors of movie revenue, highlighting the impact of budget and audience engagement.</p>
+            <div class="project-actions">
+              <a href="https://github.com/Sai1236/Project_4_MoviesData_python" target="_blank" rel="noreferrer" class="btn btn-primary">View GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <a href="#home" class="btn btn-secondary back-home" data-page-link>Back to Home</a>
+      </section>
+
+      <section id="contact" class="page">
+        <div class="page-intro">
+          <div class="section-title">Contact</div>
+          <h2>Let’s connect</h2>
+          <p class="section-sub">
+            I’m open to Data Analyst, BI Analyst, and reporting-focused opportunities where I can contribute through analytics, automation, and business storytelling.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <a href="mailto:saijaswanth.amity@gmail.com" class="contact-card">
+            <strong>Email</strong>
+            <p>saijaswanth.amity@gmail.com</p>
+          </a>
+          <a href="https://www.linkedin.com/in/amityjaswanth" target="_blank" rel="noreferrer" class="contact-card">
+            <strong>LinkedIn</strong>
+            <p>linkedin.com/in/amityjaswanth</p>
+          </a>
+          <a href="https://github.com/Sai1236" target="_blank" rel="noreferrer" class="contact-card">
+            <strong>GitHub</strong>
+            <p>github.com/Sai1236</p>
+          </a>
+        </div>
+
+        <a href="#home" class="btn btn-secondary back-home" data-page-link>Back to Home</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const pages = document.querySelectorAll('.page');
+    const navLinks = document.querySelectorAll('[data-page-link]');
+
+    function showPage(hash) {
+      const targetHash = hash && document.querySelector(hash) ? hash : '#home';
+
+      pages.forEach((page) => {
+        page.classList.remove('active');
+      });
+
+      const activePage = document.querySelector(targetHash);
+      if (activePage) {
+        activePage.classList.add('active');
+      }
+
+      navLinks.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === targetHash);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('hashchange', () => showPage(window.location.hash));
+    window.addEventListener('load', () => showPage(window.location.hash || '#home'));
+  </script>
+</body>
+</html>
